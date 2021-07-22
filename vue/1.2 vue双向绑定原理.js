@@ -16,14 +16,8 @@
     //     4.MVVM入口函数，整合以上三者
 
     具体步骤：
-        1.需要observer的数据对象进行递归遍历，包括子属性对象的属性，都加上setter和getter，这样的话，
-        给这个对象的某个值赋值，就会触发setter，那么就能监听到数据变化
-        2.compile解析模板指令，将模板中的变量替换成数据，然后初始化渲染河面视图，并将每个指令对应的节点绑定更新函数，
-        添加监听数据的订阅者，一点数据有变动，收到通知，更新视图
-        3.Watcher订阅者是Observer和Compile之间通信的桥梁，主要做的事情是：
-            a) 在自身实例化时往属性订阅器(Dep)里添加自己
-            b) 自身必须有一个Update()方法
-            c) 待属性变动Dep.notice()通知时，能调用自身update()方法，并触发Compile中绑定的回调
-        4.MVVM作为数据绑定的入口，整合Observer、Complie和Watcher三者，通过Observer来监听自己的model数据边防，通过Compile来解析变异模板指令，
-        最终利用Watcher搭起Observer和Compile之间的通信桥梁，达到数据变化 -> 视图更新；视图交互变化(input) -> 数据model变更的双向绑定效果
+        1.实现一个数据监听器Observer: 对数据对象进行递归遍历，包括子属性对象的属性，利用Object.defineProperty()对属性都加上setter和getter，这样的话，给这个对象的某个值赋值，就会触发setter，那么就能监听到数据变化
+        2.实现一个指令解析器Compile: 解析Vue模板指令，将模板中的变量替换成数据，然后初始化渲染河面视图，并将每个指令对应的节点绑定更新函数，添加监听数据的订阅者，一旦数据有变动，收到通知，调用更新函数进行数据更新
+        3.实现一个订阅者Watcher: Watcher订阅者是Observer和Compile之间通信的桥梁，主要的任务是订阅Observer中的属性值变换的消息，当收到属性值变化的消息时，出发Compile中对应的更新函数
+        4.实现一个订阅器Dep: 订阅器采用发布-订阅设计模式，用来收集订阅者Watcher，对监听器Observer和订阅者Watcher进行统一管理
 */
