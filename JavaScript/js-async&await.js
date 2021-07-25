@@ -9,6 +9,4 @@
         而async函数的await命令后面，可以是Promise对象和原始类型的值
     4.返回值是Promise
         async函数的返回值是Promise对象，Generato函数的返回值是Iterator对象
-        
-
 */
